@@ -1,0 +1,32 @@
+security:
+  oauth2:
+    client:
+      clientId: account-service
+      clientSecret: ${ACCOUNT_SERVICE_PASSWORD}
+      accessTokenUri: http://auth-service:5000/uaa/oauth/token
+      grant-type: client_credentials
+      scope: server
+
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://account-postgres:5432/${POSTGRES_DB}
+    username: ${POSTGRES_PASSWORD}
+    password: ${POSTGRES_USER}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+  liquibase:
+    enabled: true
+    change-log: classpath:changelogs/changelog-master.yaml
+
+
+server:
+  servlet:
+    context-path: /accounts
+  port: 6000
+
+feign:
+  hystrix:
+    enabled: true
